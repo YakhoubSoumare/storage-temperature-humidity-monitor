@@ -1,0 +1,6 @@
+@TemperatureHumidityApi_HostAddress = http://localhost:5152
+
+GET {{TemperatureHumidityApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
