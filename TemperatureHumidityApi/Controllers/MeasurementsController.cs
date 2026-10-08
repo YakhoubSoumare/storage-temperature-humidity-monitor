@@ -8,6 +8,7 @@ namespace TemperatureHumidityApi.Controllers;
 [Route("api/measurements")]
 public class MeasurementsController : ControllerBase
 {
+
     [HttpPost]
     public IActionResult Post(MeasurementRequest request)
     {
@@ -19,6 +20,11 @@ public class MeasurementsController : ControllerBase
             MeasurementClassifier.ClassifyHumidity(
                 request.Humidity);
 
+        string overallLevel =
+            MeasurementClassifier.ClassifyOverall(
+                temperatureLevel,
+                humidityLevel);
+
         return Ok(new
         {
             request.Id,
@@ -26,7 +32,8 @@ public class MeasurementsController : ControllerBase
             request.Temperature,
             request.Humidity,
             temperatureLevel,
-            humidityLevel
+            humidityLevel,
+            overallLevel
         });
     }
 }

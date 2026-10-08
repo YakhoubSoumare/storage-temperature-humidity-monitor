@@ -69,4 +69,30 @@ public class MeasurementClassifierTests
 
         Assert.Equal(expected, result);
     }
+
+    [Theory]
+    [InlineData("OK", "OK", "OK")]
+    [InlineData("OK", "Warning", "Warning")]
+    [InlineData("Warning", "OK", "Warning")]
+    [InlineData("Risk", "OK", "Risk")]
+    [InlineData("OK", "Risk", "Risk")]
+    [InlineData("Critical", "OK", "Critical")]
+    [InlineData("OK", "Critical", "Critical")]
+    [InlineData("Risk", "Warning", "Risk")]
+    [InlineData("Critical", "Risk", "Critical")]
+    [InlineData("Unknown", "OK", "Unknown")]
+    [InlineData("OK", "Unknown", "Unknown")]
+    [InlineData("Unknown", "Critical", "Critical")]
+    public void ClassifyOverall_ReturnsExpectedLevel(
+        string temperatureLevel,
+        string humidityLevel,
+        string expected)
+    {
+        string result =
+            MeasurementClassifier.ClassifyOverall(
+                temperatureLevel,
+                humidityLevel);
+
+        Assert.Equal(expected, result);
+    }
 }

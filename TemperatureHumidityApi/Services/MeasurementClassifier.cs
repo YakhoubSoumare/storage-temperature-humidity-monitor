@@ -47,4 +47,26 @@ public static class MeasurementClassifier
 
         return "Critical";
     }
+
+    public static string ClassifyOverall(
+    string temperatureLevel,
+    string humidityLevel)
+    {
+        string[] priority =
+        {
+            "Critical",
+            "Risk",
+            "Warning",
+            "Unknown",
+            "OK"
+        };
+
+        foreach (string level in priority)
+        {
+            if (temperatureLevel == level || humidityLevel == level)
+                return level;
+        }
+
+        return "Unknown";
+    }
 }
