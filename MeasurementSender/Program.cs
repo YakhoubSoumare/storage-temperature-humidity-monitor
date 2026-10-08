@@ -6,10 +6,21 @@ const string endpoint =
     "http://localhost:5152/api/measurements";
 
 string repoRoot = FindRepoRoot();
+
 string inputFile = Path.Combine(
     repoRoot,
     "data",
     "simulated-readings.jsonl");
+
+string outputFile = Path.Combine(
+    repoRoot,
+    "data",
+    "classification-results.jsonl");
+
+await using var writer = new StreamWriter(
+    outputFile,
+    append: false,
+    Encoding.UTF8);
 
 foreach (string line in File.ReadLines(inputFile))
 {
@@ -29,7 +40,15 @@ foreach (string line in File.ReadLines(inputFile))
 
     Console.WriteLine(
         $"{(int)response.StatusCode} | {body}");
+
+    if (!response.IsSuccessStatusCode)
+        continue;
+
+    await writer.WriteLineAsync(body);
 }
+
+Console.WriteLine();
+Console.WriteLine($"Results saved to: {outputFile}");
 
 static string FindRepoRoot()
 {
