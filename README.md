@@ -18,6 +18,72 @@ TemperatureHumidityApi
 data/classification-results.jsonl
 ```
 
+## Flow Diagram
+
+```txt
++-----------------------------+
+| Wokwi ESP32 test data       |
+| temperature / humidity / id |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| SimulatedDataCapture        |
+| reads serial data           |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| simulated-readings.jsonl    |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| MeasurementSender           |
+| reads one line at a time    |
+| sends HTTP POST             |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| TemperatureHumidityApi      |
+| receives measurement        |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| Classify temperature        |
+| OK / Warning / Risk /       |
+| Critical / Unknown          |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| Classify humidity           |
+| OK / Warning / Risk /       |
+| Critical / Unknown          |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| Calculate overall level     |
+| most serious level wins     |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| API response                |
+| temperatureLevel            |
+| humidityLevel               |
+| overallLevel                |
++-------------+---------------+
+              |
+              v
++-----------------------------+
+| classification-results.jsonl|
++-----------------------------+
+```
+
 ## Projects
 
 - `firmware/wokwi`  
